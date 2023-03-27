@@ -25,8 +25,9 @@ void render_loop(Scene scene) {
 }
 
 bool initialize() {
+    loadSDL();
     // Initialize SDL
-    if (!SDL_Init(SDL_INIT_VIDEO)) {
+    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
         writeln("Failed to Initialize SDL! ", SDL_GetError());
         return false;
     }

@@ -4,7 +4,7 @@
 	],
 	"copyright": "Copyright Kyle Webster",
 	"dependencies": {
-		"bindbc-sdl": "~>1.3.4"
+		"bindbc-sdl": "~>1.3.5"
 	},
 	"description": "Watercolor-style renderer written in D",
 	"name": "dwcr",

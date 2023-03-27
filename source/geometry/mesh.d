@@ -14,7 +14,7 @@ class Mesh {
     this() {}
     this(string meshDataPath) {
         // takes the path to a .obj file
-        File meshData = File("meshDataPath");
+        File meshData = File(meshDataPath);
 
         foreach (line; meshData.byLine()) {
             if (line[0] == 'v') vertices ~= line.split.drop(1).map!(to!float).array;

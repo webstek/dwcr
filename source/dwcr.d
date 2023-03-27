@@ -2,9 +2,9 @@ import render = rendering.render;
 import geometry.scene, geometry.model;
 import bindbc.sdl;
 
-void main() {
-    render.initialize();
-    Scene world;
+int main() {
+    if (!render.initialize()) return 1;
+    Scene world = new Scene();
     world.add(new Model("./assets/teapot.obj"));
 
     // Main loop
@@ -22,4 +22,5 @@ void main() {
     }
 
     render.close();
+    return 0;
 }
