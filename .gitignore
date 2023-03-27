@@ -1,0 +1,16 @@
+.dub
+docs.json
+__dummy.html
+docs/
+/dwcr
+dwcr.so
+dwcr.dylib
+dwcr.dll
+dwcr.a
+dwcr.lib
+dwcr-test-*
+*.exe
+*.pdb
+*.o
+*.obj
+*.lst
