@@ -16,9 +16,10 @@ int main() {
         }
 
         // Set geometry for renderer to render
-        // geometry_loop();
-        // Render geometry
-        render.render_loop(world);
+        render.worldToImageTransform(world);
+
+        // Rasterize the scene
+        render.rasterize(world);
     }
 
     render.close();
