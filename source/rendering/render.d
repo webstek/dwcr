@@ -3,6 +3,8 @@ module rendering.render;
 import bindbc.sdl;
 import std.stdio;
 
+import geometry.scene;
+
 // Window Constants
 const int width = 640;
 const int height = 480;
@@ -12,22 +14,36 @@ SDL_Window* window = null;
 SDL_Surface* screenSurface = null;
 SDL_Surface* bufferSurface = null;
 
-// Array to write values to
-// float[width][height][3] canvas;
+/+
++ Does the following transformations of coordinates:
++ World       ->       View       ->       Clip        ->       Normalized       ->       Image
++       view transform   projection transform  perspective divide         screen transform
++/
+void worldToImageTransform(Scene scene) {
 
-import geometry.scene;
+}
 
-void render_loop(Scene scene) {
-    // Transform vertices to screen-space
-    // Clipping
-    // Project vertices to the screen
-    // Change to triangles
-    // Rasterize the triangles
+void rasterize(Scene scene) {
+    // Assume vertices are in image coordinates
+    // 2. Change to triangles
+    // 3. Rasterize each triangle
 
-    // Until I write an algorithm to draw a triangle
+    // Prep buffer surface for drawing to
     SDL_SetSurfaceRLE(bufferSurface, 1);
     SDL_LockSurface(bufferSurface);
 
+    // Until I finish the transform function, draw a test circle
+    for (int v = 0; v < bufferSurface.w - 1; v++) {
+        for (int u = 0; u < bufferSurface.h - 1; u++) {
+            if ((u - width / 2) * (u - width / 2) + (v - height / 2) * (v - height / 2) < 100 * 100) {
+                setPixelColor(bufferSurface, u, v, 130, 130, 200);
+            }
+        }
+    }
+    SDL_UnlockSurface(bufferSurface);
+
+    SDL_BlitSurface(bufferSurface, null, screenSurface, null);
+    SDL_UpdateWindowSurface(window);
 }
 
 void setPixelColor(SDL_Surface* surface, uint u, uint v, ubyte r, ubyte g, ubyte b) {
