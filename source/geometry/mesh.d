@@ -24,9 +24,9 @@ class Mesh {
         numTri = faceIndices.length.to!int;
     }
     
-    //faceIndices[j].map!(i=>vertices[i-1]) will give the array with the three vertices for the jth triangle in the mesh
-    float[][] triangle(uint index) {
-        return faceIndices[index].map!(i=>vertices[i-1]).array;
+    // Returns the array of triangles which are arrays of the vertices
+    auto triangles() {
+        return faceIndices.map!(map!(i=>vertices[i-1])).array;
     }
 }
 

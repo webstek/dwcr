@@ -15,8 +15,8 @@ int main() {
             if (event.type == SDL_QUIT) break mainLoop;
         }
 
-        // Set geometry for renderer to render
-        render.worldToImageTransform(world);
+        // Transform scene to perspective of the camera
+        render.worldToView(world);
 
         // Rasterize the scene
         render.rasterize(world);
