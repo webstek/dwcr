@@ -1,6 +1,7 @@
 module compute.linalg;
 
 import std.math;
+import std.algorithm;
 
 /*
     Class representing a vector in R3
@@ -21,59 +22,72 @@ import std.math;
     Future work:
     - Add method so object can automatically print the x,y,z components instead of compute.linalg.Vec3 is writeln
 */
-class Vec3 {
-    float x;
-    float y;
-    float z;
+template vec(uint N) {
+    float[N] components = 0;
 
-    this() {
-        x, y, z = 0;
-    }
-    this(float x, float y, float z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-    }
-
-    // Get component at index. 0, 1, 2 and the only permissible values.
-    float opIndex(uint index) {
-        switch (index) {
-            case 0:
-                return this.x;
-            case 1:
-                return this.y;
-            case 2:
-                return this.z;
-            default:
-                import std.stdio : writeln;
-                writeln("Index Out or bounds!");
-                return 0;
+    this(float[N] vals) {
+        foreach (i ; 0 .. N) {
+            components[i] = vals[i];
         }
     }
 
+    // Component operator []
+    // u[0] for the first entry
+    // slices do not work
+    float opIndex(uint index) {
+        return components[index];
+    }
+
     // Length of u
+    // u.length
     float length() {
-        return sqrt(this.x*this.x + this.y*this.y + this.z*this.z);
+        float length = 0;
+        foreach (e ; components) {
+            length += e*e;
+        }
+        return sqrt(length);
     }
 
     // Unit vector of u
-    Vec3 opUnary(string s : "~")() {
+    // ~u
+    vec!(N) opUnary(string s : "~")() {
         float l = this.length;
-        return new Vec3(this.x / l, this.y / l, this.z / l);
+        float[N] unitVecComponents;
+        foreach (i ; 0 .. N) {
+            unitVecComponents[i] = components[i] / l;
+        }
+        return new vec!(N)(unitVecComponents);
     }
 
     // Adding Vectors
-    Vec3 opBinary(string op : "+")(Vec3 vec) {
-        return new Vec3(this.x + vec.x, this.y + vec.y, this.z + vec.z);
+    // u + v
+    vec!(N) opBinary(string op : "+")(vec!(N) vec) {
+        float[N] sumComponents;
+        foreach (i ; 0 .. N) {
+            sumComponents[i] = components[i] + vec[i];
+        }
+        return new vec!(N)(sumComponents);
     }
 
     // Dot product
-    float opBinary(string op : "*")(Vec3 v) {
-        return this.x * v.x + this.y * this.y + this.z * v.z;
+    // u * v
+    float opBinary(string op : "*")(vec!(N) vec) {
+        float dotProduct = 0;
+        foreach (i ; 0 .. N) {
+            dotProduct += components[i] * vec[i];
+        }
     }
 
     // Cross Product
-    Vec3 opBinary(string s : "^")(Vec3 vec) {
-        return new Vec3(this.y*vec.z - this.z*vec.y, -(this.x*vec.z - this.z*vec.x), this.x*vec.y - this.y*vec.x);
+    // u ^ v
+    vec!(N) opBinary(string s : "^")(vec!(N) vec) {
+        // Must be a vec!(3)
+        if (N != 3) {
+            writeln("Trying to cross a non-vec!(3). Original vector returned");
+            return this;
+        }
+        return new vec!(3)(  this[1]*vec[2] - this[2]*vec[1], 
+                           -(this[0]*vec[2] - this[2]*vec[0]), 
+                             this[0]*vec[1] - this[1]*vec[0]);
     }
 }

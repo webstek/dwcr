@@ -13,6 +13,7 @@ import rendering.materials;
 // Window Constants
 const int width = 640;
 const int height = 480;
+float[height][width] zbuffer = float.max;
 
 // SDL Constants
 SDL_Window* window = null;
